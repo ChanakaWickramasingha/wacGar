@@ -10,3 +10,16 @@ def login_user(email,password):
     }
     response = requests.post(url,json=payload)
     return response
+
+def predict_garbage(image_file, token):
+    url = f"{Base_url}/predict"
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+
+    files = {
+        "file": image_file
+    }
+
+    response = requests.post(url, headers=headers, files=files)
+    return response
