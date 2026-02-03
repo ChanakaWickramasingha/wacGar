@@ -11,7 +11,7 @@ def login_user(email,password):
     response = requests.post(url,json=payload)
     return response
 
-def predict_garbage(uploaded_file, token = None):
+def predict_garbage(uploaded_file, token):
     url = f"{Base_url}/predict"
     headers = {
         "Authorization": f"Bearer {token}"

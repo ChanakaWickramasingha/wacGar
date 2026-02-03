@@ -6,7 +6,7 @@ from app.routes.auth import get_current_user
 router = APIRouter(prefix="/predict", tags=["Prediction"])
 
 @router.post("")
-async def predict_garbage(file: UploadFile = File(...)):
+async def predict_garbage(file: UploadFile = File(...),user=Depends(get_current_user)):
 
     try:
         if not file.content_type or not file.content_type.startswith("image/"):
