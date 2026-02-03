@@ -9,7 +9,7 @@ router = APIRouter(prefix="/predict", tags=["Prediction"])
 async def predict_garbage(file: UploadFile = File(...)):
 
     try:
-        if not file.content_type.startswith("image/"):
+        if not file.content_type or not file.content_type.startswith("image/"):
             raise HTTPException(status_code=400, detail="Invalid image file")
 
         image_bytes = await file.read()

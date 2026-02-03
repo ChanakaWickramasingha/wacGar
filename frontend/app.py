@@ -42,7 +42,7 @@ def dashboard():
     )
 
     if uploaded_file:
-        st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
+        st.image(uploaded_file, caption="Uploaded Image", use_column_width=None)
 
         if st.button("Classify Garbage"):
             with st.spinner("Analyzing image..."):
