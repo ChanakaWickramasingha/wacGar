@@ -1,12 +1,47 @@
 import streamlit as st
 from api import login_user
 from api import predict_garbage
+from api import signup_user
 
 st.set_page_config(page_title="Garbage Classifier", layout="centered")
 
 # ---------------- SESSION STATE ----------------
 if "token" not in st.session_state:
     st.session_state.token = None
+if "page" not in st.session_state:
+    st.session_state.page = "signup"  # login | signup
+
+# ---------------- SIGNUP PAGE ----------------
+def signup_page():
+    st.title("📝 Sign Up")
+
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    confirm_password = st.text_input("Confirm Password", type="password")
+
+    if st.button("Create Account"):
+        if not email or not password or not confirm_password:
+            st.warning("Please fill all fields")
+            return
+
+        if password != confirm_password:
+            st.error("Passwords do not match")
+            return
+
+        response = signup_user(email, password)
+
+        if response.status_code == 200:
+            st.success("Account created successfully 🎉")
+            st.info("Please login now")
+            st.session_state.page = "login"
+            st.rerun()
+        else:
+            st.error(response.json().get("detail", "Signup failed"))
+
+    st.write("Already have an account?")
+    if st.button("Go to Login"):
+        st.session_state.page = "login"
+        st.rerun()
 
 # ---------------- LOGIN PAGE ----------------
 def login_page():
@@ -75,4 +110,7 @@ def dashboard():
 if st.session_state.token:
     dashboard()
 else:
-    login_page()
+    if st.session_state.page == "signup":
+        signup_page()
+    else:
+        login_page()
