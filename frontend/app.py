@@ -1,7 +1,8 @@
 import streamlit as st
-from api import login_user
+
 from api import predict_garbage
 from api import signup_user
+from api import login_user
 
 st.set_page_config(page_title="Garbage Classifier", layout="centered")
 
@@ -9,7 +10,11 @@ st.set_page_config(page_title="Garbage Classifier", layout="centered")
 if "token" not in st.session_state:
     st.session_state.token = None
 if "page" not in st.session_state:
-    st.session_state.page = "signup"  # login | signup
+    st.session_state.page = "login"  # login | signup
+
+# ---------------- TOP NAV BAR ----------------
+
+
 
 # ---------------- SIGNUP PAGE ----------------
 def signup_page():
@@ -43,27 +48,43 @@ def signup_page():
         st.session_state.page = "login"
         st.rerun()
 
+
 # ---------------- LOGIN PAGE ----------------
+#login_page()
+
+
+
 def login_page():
     st.title("🔐 Login")
 
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
 
-    if st.button("Login"):
-        if not email or not password:
-            st.warning("Please fill all fields")
-            return
+   # Buttons
+    col1, col2 = st.columns(2, gap="small")
 
-        response = login_user(email, password)
+    with col1:
+        if st.button("🚀 Login", use_container_width=True, key="login_btn"):
+            if not email or not password:
+                st.warning("⚠️ Please fill all fields")
 
-        if response.status_code == 200:
-            data = response.json()
-            st.session_state.token = data["access_token"]
-            st.success("Login successful 🎉")
-            st.rerun()
-        else:
-            st.error("Invalid email or password")
+                    # Assuming you have a login_user function
+            response = login_user(email, password)
+
+            if response.status_code == 200:
+                        data = response.json()
+                        st.session_state.token = data["access_token"]
+                        st.success("🎉 Login successful!")
+                        st.balloons()
+                        st.rerun()
+            else:
+                        st.error("❌ Invalid email or password")
+
+    with col2:
+                if st.button("✨ Sign Up", key="signup_btn", use_container_width=True):
+                    st.session_state.page = "signup"
+                    st.rerun()
+
 
 # ---------------- DASHBOARD ----------------
 def dashboard():
