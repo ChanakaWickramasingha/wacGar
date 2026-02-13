@@ -156,7 +156,7 @@ def dashboard():
         )
 
         if uploaded_file:
-            st.image(uploaded_file, use_column_width=True)
+            st.image(uploaded_file, width="stretch")
 
         if st.button("Run Classification", use_container_width=True):
             with st.spinner("Analyzing image with AI model..."):
