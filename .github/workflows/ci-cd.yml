@@ -1,0 +1,53 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Check backend app
+        run: |
+          cd backend
+          python -c "import main"
+
+  frontend:
+    runs-on: ubuntu-latest
+    needs: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          pip install -r requirements.txt
+
+      - name: Check frontend app
+        run: |
+          cd frontend
+          python -c "import app"
