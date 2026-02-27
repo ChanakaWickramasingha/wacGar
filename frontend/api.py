@@ -1,6 +1,10 @@
 import requests
+from dotenv import load_dotenv
+import os
 
-Base_url = "http://127.0.0.1:8000"
+load_dotenv()
+
+Base_url = os.getenv("BASE_URL")
 
 def login_user(email,password):
     url = f"{Base_url}/auth/login"
