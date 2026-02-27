@@ -27,7 +27,7 @@ jobs:
       - name: Check backend app
         run: |
           cd backend
-          python -c "import main"
+          python -c "import app"
 
   frontend:
     runs-on: ubuntu-latest
