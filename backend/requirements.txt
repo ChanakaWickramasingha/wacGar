@@ -9,3 +9,5 @@ tensorflow
 numpy
 python-multipart
 google-generativeai
+httpx
+pytest
