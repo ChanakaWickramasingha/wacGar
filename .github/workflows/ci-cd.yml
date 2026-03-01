@@ -35,10 +35,10 @@ jobs:
       - name: Run backend tests
         run: |
               cd backend
-              pip install pytest
               pytest
         env:
               GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+              PYTHONPATH: ${{ github.workspace }}/backend
 
   frontend:
     runs-on: ubuntu-latest
