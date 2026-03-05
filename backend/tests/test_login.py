@@ -16,7 +16,7 @@ def test_login_success(client, test_db):
     test_db.commit()
 
     # correct login request
-    response = client.post("/login", json={
+    response = client.post("/auth/login", json={
         "username": "amantha@gmail.com",
         "password": "amantha"
     })
