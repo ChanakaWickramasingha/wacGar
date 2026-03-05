@@ -6,7 +6,7 @@ from app.routes.auth import get_db
 
 def test_login_success(client, test_db):
 
-    # create fake user
+    # create test user
     user = User(
         email="amantha@gmail.com",
         hash_password=hash_password("amantha")

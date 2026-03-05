@@ -14,29 +14,28 @@ engine = create_engine(
     connect_args={"check_same_thread": False},
 )
 
-TestingSessionLocal = sessionmaker(bind=engine)
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
-def override_get_db():
+# create tables before tests
+@pytest.fixture(scope="function")
+def test_db():
+    Base.metadata.create_all(bind=engine)  # ✅ create all tables
     db = TestingSessionLocal()
     try:
         yield db
     finally:
         db.close()
+        Base.metadata.drop_all(bind=engine)  # optional: clean up after test
 
-
-app.dependency_overrides[get_db] = override_get_db
-
-
+# override FastAPI dependency
 @pytest.fixture(scope="function")
-def test_db():
-    Base.metadata.create_all(bind=engine)
-    session = TestingSessionLocal()
-    yield session
-    session.close()
-    Base.metadata.drop_all(bind=engine)
+def client(test_db):
+    def override_get_db():
+        try:
+            yield test_db
+        finally:
+            pass
 
-
-@pytest.fixture(scope="function")
-def client():
-    return TestClient(app)
+    app.dependency_overrides[get_db] = override_get_db
+    from fastapi.testclient import TestClient
+    yield TestClient(app)
