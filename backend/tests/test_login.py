@@ -6,17 +6,14 @@ from app.routes.auth import get_db
 
 def test_login_success(client, test_db):
 
-    # get test database session
-    db: Session = next(get_db())
-
     # create fake user
     user = User(
         username="amantha@gmail.com",
         password=hash_password("amantha")
     )
 
-    db.add(user)
-    db.commit()
+    test_db.add(user)
+    test_db.commit()
 
     # correct login request
     response = client.post("/login", json={
