@@ -8,8 +8,8 @@ def test_login_success(client, test_db):
 
     # create fake user
     user = User(
-        username="amantha@gmail.com",
-        password=hash_password("amantha")
+        email="amantha@gmail.com",
+        hash_password=hash_password("amantha")
     )
 
     test_db.add(user)
