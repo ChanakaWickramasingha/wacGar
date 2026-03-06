@@ -39,6 +39,7 @@ jobs:
         env:
               GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
               PYTHONPATH: ${{ github.workspace }}/backend
+              DATABASE_URL: "sqlite:///./test.db"
 
   frontend:
     runs-on: ubuntu-latest
